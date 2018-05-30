@@ -1,0 +1,23 @@
+---
+defaults: &defaults
+  instances: 1
+  buildpack: https://github.com/cloudfoundry/python-buildpack
+  memory: 512M
+  services:
+    - rmq-demo
+  env:
+    RMQ_SERVICE: p-rabbitmq
+    VERIFY: '/etc/ssl/certs'
+
+applications:
+- name: rabbitmq-sender-demo
+  <<: *defaults
+  health-check-type: port
+  command: python sender.py
+  path: ./sender
+- name: rabbitmq-receiver-demo
+  <<: *defaults
+  no-route: true
+  health-check-type: process
+  command: python receiver.py
+  path: ./receiver
