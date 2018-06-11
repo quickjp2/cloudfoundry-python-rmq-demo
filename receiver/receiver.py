@@ -13,6 +13,10 @@ import sys
 #formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 #ch.setFormatter(formatter)
 #log.addHandler(ch)
+
+RMQ_EXCHANGE = os.getenv('RMQ_EXCHANGE', 'rabbitmq-demo')
+BINDING_KEY = os.getenv('BINDING_KEY', '#')
+
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % body)
 
@@ -25,11 +29,10 @@ def main():
     #For Receiving
     connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
     channel = connection.channel()
-    channel.exchange_declare(exchange='rabbitmq-demo', exchange_type='topic')
-    result = channel.queue_declare(queue='hello',
-                                   durable=True)
+    channel.exchange_declare(exchange=os.getenv('RMQ_EXCHANGE', 'rabbitmq-demo'), exchange_type='topic')
+    result = channel.queue_declare(queue='hello', durable=True)
     queue_name = result.method.queue
-    channel.queue_bind(exchange='rabbitmq-demo', queue=queue_name, routing_key='#')
+    channel.queue_bind(exchange='rabbitmq-demo', queue=queue_name, routing_key=os.getenv('BINDING_KEY','#'))
     channel.basic_consume(callback, queue=queue_name)
     channel.start_consuming()
 
