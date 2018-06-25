@@ -15,7 +15,7 @@ applications:
 - name: rabbitmq-sender-demo
   <<: *general_info
   health-check-type: port
-  # random-route: true
+  random-route: true
   command: python sender.py
   path: ./sender
   env:
