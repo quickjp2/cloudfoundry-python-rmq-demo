@@ -15,12 +15,12 @@ applications:
 - name: rabbitmq-sender-demo
   <<: *general_info
   health-check-type: port
-  random-route: true
+  # random-route: true
   command: python sender.py
   path: ./sender
   env:
     # ROUTING_KEY: 'hello'
-    <<: *&general_env
+    <<: *general_env
 - name: rabbitmq-receiver-demo
   <<: *general_info
   no-route: true
@@ -29,4 +29,4 @@ applications:
   path: ./receiver
   env:
     # BINDING_KEY: '#'
-    <<: *&general_env
+    <<: *general_env
