@@ -4,6 +4,7 @@ import os
 import pika
 import logging
 import sys
+from time import sleep
 
 #For Logging
 #log = logging.getLogger()
@@ -17,8 +18,14 @@ import sys
 RMQ_EXCHANGE = os.getenv('RMQ_EXCHANGE', 'rabbitmq-demo')
 BINDING_KEY = os.getenv('BINDING_KEY', '#')
 
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+def callback(ch, method, properties, raw_body):
+    print(" [x] Received %r" % raw_body)
+    # if isinstance(raw_body, str):
+    #     body = json.loads(raw_body)
+    # else:
+    #     body = json.loads(str(raw_body, 'utf-8'))
+    # if 'sleep' in raw_body:
+    #     sleep(10)
 
 def main():
     #Getting Service Info

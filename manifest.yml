@@ -9,17 +9,17 @@ general_info: &general_info
 general_env: &general_env
     RMQ_SERVICE: p-rabbitmq
     VERIFY: '/etc/ssl/certs'
-    # RMQ_EXCHANGE: rabbitmq-demo
+    RMQ_EXCHANGE: rabbitmq-demo
 
 applications:
-- name: rabbitmq-sender-demo
+- name: rabbitmq-sender-demo-green
   <<: *general_info
   health-check-type: port
-  random-route: true
+  # random-route: true
   command: python sender.py
   path: ./sender
   env:
-    # ROUTING_KEY: 'hello'
+    ROUTING_KEY: 'hello'
     <<: *general_env
 - name: rabbitmq-receiver-demo
   <<: *general_info
@@ -28,5 +28,5 @@ applications:
   command: python receiver.py
   path: ./receiver
   env:
-    # BINDING_KEY: '#'
+    BINDING_KEY: '#'
     <<: *general_env
