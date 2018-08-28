@@ -1,6 +1,5 @@
 ---
 general_info: &general_info
-  instances: 1
   buildpack: https://github.com/cloudfoundry/python-buildpack
   memory: 512M
   services:
@@ -12,14 +11,15 @@ general_env: &general_env
     RMQ_EXCHANGE: rabbitmq-demo
 
 applications:
-- name: rabbitmq-sender-demo-green
+- name: rabbitmq-sender-demo
   <<: *general_info
   health-check-type: port
-  # random-route: true
+  random-route: true
   command: python sender.py
   path: ./sender
   env:
     ROUTING_KEY: 'hello'
+    LOG_LEVEL: DEBUG
     <<: *general_env
 - name: rabbitmq-receiver-demo
   <<: *general_info

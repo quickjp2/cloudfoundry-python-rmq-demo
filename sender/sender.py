@@ -53,7 +53,7 @@ class RmqClient(object):
         LOGGER.debug("Let's send a post call")
         self.connection = pika.BlockingConnection(self.parameters)
         self.channel = self.connection.channel()
-        self.channel.exchange_declare(exchange=self.exchange, type='topic')
+        self.channel.exchange_declare(exchange=self.exchange, exchange_type='topic')
         self.channel.basic_publish(exchange=self.exchange,
                                    routing_key=routing_key,
                                    body=msg,
@@ -75,7 +75,7 @@ class RmqClient(object):
         self.corr_id = str(uuid.uuid4())
         self.connection = pika.BlockingConnection(self.parameters)
         self.channel = self.connection.channel()
-        self.channel.exchange_declare(exchange=self.exchange, type='topic')
+        self.channel.exchange_declare(exchange=self.exchange, exchange_type='topic')
         result = self.channel.queue_declare(exclusive=True)
         self.callback_queue = result.method.queue
         self.channel.queue_bind(exchange=self.exchange, queue=self.callback_queue)
@@ -143,24 +143,16 @@ def test_send():
             message = payload['message']
         except KeyError:
             return "Unable to find the message in your json :(\nI got {}".format(payload)
+        if 'rpc' in payload:
+            if payload['rpc'] == True:
+                print("Sending an RPC call!")
+                return RABBIT_CLIENT.rpc_call(ROUTING_KEY, json.dumps(payload))
         RABBIT_CLIENT.post_call(ROUTING_KEY, message)
-        # channel = CONNECTION.channel()
-        # channel.exchange_declare(exchange=RMQ_EXCHANGE, exchange_type='topic')
-        # channel.basic_publish(exchange=RMQ_EXCHANGE,
-        #                     routing_key=ROUTING_KEY,
-        #                     body=message)
-        # CONNECTION.close()
         return "Sent! Message: {}".format(message)
 
     else:
         #For Sending
         RABBIT_CLIENT.post_call(ROUTING_KEY, TEST_MESSAGE)
-        # channel = CONNECTION.channel()
-        # channel.exchange_declare(exchange=RMQ_EXCHANGE, exchange_type='topic')
-        # channel.basic_publish(exchange=RMQ_EXCHANGE,
-        #                     routing_key=ROUTING_KEY,
-        #                     body=TEST_MESSAGE)
-        # CONNECTION.close()
         return "Sent! Message: {}\nIf you want to send a custom message, make a POST call with a json payload that contains the message key!".format(TEST_MESSAGE)
 
 if __name__ == '__main__':

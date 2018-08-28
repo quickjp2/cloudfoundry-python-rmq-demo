@@ -25,6 +25,9 @@ The only setup required is to create a rabbitmq service in your org/space within
 - TADA! Highlander mode! We can kill one instance of the GUI but us as a customer don't see the site go down.
 
 ### Helpful stuff
+### Sample Commands
+- `cf create-service p-rabbitmq standard rmq-demo` - create a rabbitmq service
+
 #### Custom message call
 `<URL>/test`
 ```JSON
