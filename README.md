@@ -35,3 +35,13 @@ The only setup required is to create a rabbitmq service in your org/space within
     "message": "Some cool message!"
 }
 ```
+
+#### Custom message call with lag
+`<URL>/test`
+```JSON
+{
+   "message":"You look tired, you should sleep for a few...",
+   "sleep":10,
+   "rpc":true
+}
+```
