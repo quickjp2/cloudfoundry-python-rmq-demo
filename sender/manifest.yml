@@ -10,7 +10,6 @@ applications:
   health-check-type: port
   random-route: true
   command: python sender.py
-  path: ./sender
   env:
     ROUTING_KEY: 'hello'
     LOG_LEVEL: DEBUG

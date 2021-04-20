@@ -10,7 +10,6 @@ applications:
   no-route: true
   health-check-type: process
   command: python receiver.py
-  path: ./receiver
   env:
     BINDING_KEY: '#'
     RMQ_SERVICE: p-rabbitmq
