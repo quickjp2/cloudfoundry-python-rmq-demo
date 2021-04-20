@@ -1,0 +1,19 @@
+---
+# This is not needed if using the root manifest.yml
+applications:
+- name: rabbitmq-sender-demo
+  buildpack: https://github.com/cloudfoundry/python-buildpack
+  memory: 512M
+  services:
+    - rmq-demo
+  health-check-type: port
+  random-route: true
+  command: python sender.py
+  path: ./sender
+  env:
+    ROUTING_KEY: 'hello'
+    LOG_LEVEL: DEBUG
+    RMQ_SERVICE: p-rabbitmq
+    VERIFY: '/etc/ssl/certs'
+    RMQ_EXCHANGE: rabbitmq-demo
+...
