@@ -79,7 +79,7 @@ def main():
     result = channel.queue_declare(queue='hello', durable=True)
     queue_name = result.method.queue
     channel.queue_bind(exchange=os.getenv('RMQ_EXCHANGE'), queue=queue_name, routing_key=os.getenv('BINDING_KEY','#'))
-    channel.basic_consume(callback, queue=queue_name)
+    channel.basic_consume(on_message_callback=callback, queue=queue_name)
     channel.start_consuming()
 
 if __name__ == '__main__':
