@@ -2,7 +2,8 @@
 # This is not needed if using the root manifest.yml
 applications:
 - name: rabbitmq-sender-demo
-  buildpack: https://github.com/cloudfoundry/python-buildpack
+  buildpacks:
+  - https://github.com/cloudfoundry/python-buildpack
   memory: 512M
   services:
     - rmq-demo

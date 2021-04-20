@@ -1,9 +1,10 @@
 ---
 general_info: &general_info
-  buildpack: https://github.com/cloudfoundry/python-buildpack
+  buildpacks:
+  - https://github.com/cloudfoundry/python-buildpack
   memory: 512M
   services:
-    - rmq-demo
+  - rmq-demo
 
 general_env: &general_env
     RMQ_SERVICE: p-rabbitmq
